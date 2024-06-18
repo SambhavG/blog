@@ -1,31 +1,31 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
 			<channel>
-				<title>Shakespeare</title>
-				<description>SvelteKit blog for poets</description>
-				<link>https://joyofcode.xyz</link>
-				<atom:link href="https://joyofcode.xyz/rss.xml" rel="self" type="application/rss+xml"/>
+				<title>Sambhav's Blog</title>
+				<description>Sambhav Gupta's Blog</description>
+				<link>https://sambhavg.github.io</link>
+				<atom:link href="https://sambhavg.github.io/rss.xml" rel="self" type="application/rss+xml"/>
 				
 						<item>
 							<title>I tried Bend</title>
 							<description>I tried Bend</description>
-							<link>https://joyofcode.xyz/bend</link>
-							<guid isPermaLink="true">https://joyofcode.xyz/bend</guid>
+							<link>https://sambhavg.github.io/bend</link>
+							<guid isPermaLink="true">https://sambhavg.github.io/bend</guid>
 							<pubDate>Sun, 16 Jun 2024 07:00:00 GMT</pubDate>
 						</item>
 					
 						<item>
 							<title>Second</title>
 							<description>Second post.</description>
-							<link>https://joyofcode.xyz/second-post</link>
-							<guid isPermaLink="true">https://joyofcode.xyz/second-post</guid>
+							<link>https://sambhavg.github.io/second-post</link>
+							<guid isPermaLink="true">https://sambhavg.github.io/second-post</guid>
 							<pubDate>Sun, 16 Apr 2023 07:00:00 GMT</pubDate>
 						</item>
 					
 						<item>
 							<title>First post</title>
 							<description>First post.</description>
-							<link>https://joyofcode.xyz/first-post</link>
-							<guid isPermaLink="true">https://joyofcode.xyz/first-post</guid>
+							<link>https://sambhavg.github.io/first-post</link>
+							<guid isPermaLink="true">https://sambhavg.github.io/first-post</guid>
 							<pubDate>Fri, 14 Apr 2023 07:00:00 GMT</pubDate>
 						</item>
 					

@@ -38,7 +38,7 @@ The unseen bit of logic here is that whenever we write t.left, or t.right, since
 This is essentially a BFS on the tree, where each branch can be computed in parallel, and opportunities for parallel computing like this are how Bend is able to multithread programs.
 
 What we wrote is (mostly) equivalent to this C program:
-```C
+```c
 void doubleTree(Tree* t) {
 	//no tree
 	if !t return;

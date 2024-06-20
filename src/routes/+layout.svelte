@@ -9,7 +9,7 @@
 	import '../app.css'
 
 	export let data
-	export const prerender = true;
+	// export const prerender = true;
 </script>
 
 <div class="layout">

@@ -2,7 +2,7 @@
 	import { formatDate } from '$lib/utils'
 
 	export let data
-	export const prerender = true;
+	// export const prerender = true;
 </script>
 
 <svelte:head>

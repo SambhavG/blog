@@ -7,26 +7,10 @@
 				
 						<item>
 							<title>I tried Bend</title>
-							<description>I tried Bend</description>
+							<description>A case study and lessons learned from Bend, the new massively parallel programming language</description>
 							<link>https://sambhavg.github.io/bend</link>
 							<guid isPermaLink="true">https://sambhavg.github.io/bend</guid>
-							<pubDate>Sun, 16 Jun 2024 07:00:00 GMT</pubDate>
-						</item>
-					
-						<item>
-							<title>Second</title>
-							<description>Second post.</description>
-							<link>https://sambhavg.github.io/second-post</link>
-							<guid isPermaLink="true">https://sambhavg.github.io/second-post</guid>
-							<pubDate>Sun, 16 Apr 2023 07:00:00 GMT</pubDate>
-						</item>
-					
-						<item>
-							<title>First post</title>
-							<description>First post.</description>
-							<link>https://sambhavg.github.io/first-post</link>
-							<guid isPermaLink="true">https://sambhavg.github.io/first-post</guid>
-							<pubDate>Fri, 14 Apr 2023 07:00:00 GMT</pubDate>
+							<pubDate>Thu, 20 Jun 2024 07:00:00 GMT</pubDate>
 						</item>
 					
 			</channel>

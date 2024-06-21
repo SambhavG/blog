@@ -1,19 +1,22 @@
 ---
 title: I tried Bend
-description: I tried Bend
-date: '2024-6-16'
+description: A case study and lessons learned from Bend, the new massively parallel programming language
+date: '2024-6-20'
 categories:
   - Bend
   - Programming
 published: true
 ---
+## Contents
+
+## Introduction
 I decided to try the new [Bend](https://github.com/HigherOrderCO/Bend) programming language.
 
 Bend has two main goals:
 1. In Bend, if your code can run in parallel, it will run in parallel
 2. Bend is as easy to write as Python
 
-This post is my attempt at a case study mixed in with my thoughts about the language.
+This post is my attempt at a case study with my thoughts about the language mixed in.
 
 Disclaimer: this post almost certainly has errors and misunderstandings about Bend. My background is as a university math/CS student with some functional programming knowledge.
 ## Quick background
@@ -40,18 +43,18 @@ This is essentially a BFS on the tree, where each branch can be computed in para
 What we wrote is (mostly) equivalent to this C program:
 ```c
 void doubleTree(Tree* t) {
-	//no tree
-	if !t return;
-	
-	//leaf
-	if (!t->left && !t->right) {
-		t->value *= 2;
-		return;
-	}
-	
-	//non leaf
-	doubleTree(t->left);
-	doubleTree(t->right);
+    // No tree
+    if (!t) return;
+    
+    // Leaf
+    if (!t->left && !t->right) {
+        t->value *= 2;
+        return;
+    }
+    
+    // Non-leaf
+    doubleTree(t->left);
+    doubleTree(t->right);
 }
 ```
 
@@ -90,11 +93,11 @@ It seems like any computation involving lists will take O(n) time - for this rea
 ## Attempt 2: Maps
 Bend also has a map datatype. This map works similar to normal maps or dictionaries in other languages, and in theory can be used to simulate an indexable list which avoids the sequentiality of Lists.
 
-The underlying structure of a Map is a bit complex; Maps represent the data as a binary tree where each node is either a Node or a Leaf. Leaves are just blank end caps in this case, and don't hold data. Each Node either does or doesn't contain a value, as well as a reference to left and right nodes. Nodes with no value contain a \* instead. 
+The underlying structure of a Map is interesting; Maps represent the data as a binary tree where each node is either a Node or a Leaf. Leaves are just blank end caps in this case, and don't hold data. Each Node either does or doesn't contain a value, as well as a reference to left and right nodes. Nodes with no value contain a \* instead. 
 
-This tree is designed such that every key (that we initialized the map with) corresponds with one node, where for each key k (in binary), the corresponding node is such that we step left for a 0 and right for a 1 when we read k from left to right (so 0 is the root node, 1 is the root's right, 2 is the root's left then right, etc.) Keys must either be or be similar to nonnegative integers.
+This tree is designed such that every key (that we initialized the map with) corresponds with exactly one node, where for each key k (in binary), the corresponding node is the one we get to by reading the binary little-endian (least to most significant bit) and stepping left for 0, right for 1. For example, all odd numbers end up to the right of the root since they have last digit 1. Keys must be representable as nonnegative integers to make this scheme work.
 
-For this approach, I directly use the map structure as a vector (so m\[i\] is the i'th index of the vector) and compute dot product recursively on the tree. The issue here is that while I can "match" the difference between a Leaf and a Node, I couldn't find a way to match the difference between a \* and an actual value, so I couldn't find a way to compute dot product recursively as v1.value \* v2.value + dot(v1.left, v2.left) + dot(v1.right, v2.right) without the \* valued nodes getting in the way.
+For this approach, I directly use the map structure as a vector (so m\[i\] is the i'th index of the vector) and compute dot product recursively on the tree. The issue I ran into is that while I can "match" the difference between a Leaf and a Node, I couldn't find a way to match the difference between a \* and an actual value, so I couldn't find a way to compute dot product recursively as v1.value \* v2.value + dot(v1.left, v2.left) + dot(v1.right, v2.right) without the \* valued nodes messing up the computation.
 ## Attempt 3: Maps, merge-sort style
 Alternatively, I can use the map indexing syntax. My function should take the dot product of the left half and right half of the first map with the left half and right half of the second map respectively.
 ```python
@@ -102,7 +105,8 @@ def dotProduct(v1, v2, l, r):
   if l == r:
     return v1[l] * v2[r]
   else:
-    return dotProduct(v1, v2, l, (l+r)/2) + dotProduct(v1, v2, (l+r)/2+1, r)
+    return dotProduct(v1, v2, l, (l+r)/2) + 
+	       dotProduct(v1, v2, (l+r)/2+1, r)
 ```
 This turns out to work, but it's a bit less efficient than approach 2 would have been - while approach 2 would traverse the tree just once, this approach has to fetch every element individually starting from the top - a slowdown of log n.
 
@@ -113,7 +117,7 @@ The best (and only), but still problematic way I found to do this was to merge t
 This is definitely not computationally optimal because we are doing a ridiculous amount of extra work; Bend's variables are immutable, so each time we move one element over, we have to copy the first vector or matrix (this is probably optimized under the hood, like in Haskell). We're also moving each element to a different map O(log n) times instead of O(1) times if we just moved everything into one map by looping through the results. This was the best I could figure out under the restrictions of Bend, however.
 
 Code for this approach is in `map.bend`.
-### _fold_ is a subset of _match_; but why use fold?
+## _fold_ is a subset of _match_; but why use fold?
 Quick tangent: Bend has a _match_ keyword which takes a structure and does something with it based on what its type is. It turns out (as mentioned in the docs) that the fold operation is syntactic sugar for match:
 ```python
 fold t:
@@ -159,7 +163,7 @@ Out of laziness, I made this approach work only good enough for matrices of size
 
 Code for this approach is in `tree.bend`.
 ## In general, implementations must be tailored for Bend
-While "if your code _can_ run in parallel, it _will_ run in parallel", it turns out that making sure your code _can_ run in parallel is not so easy. You will almost certainly have to write or redesign your data to work with Bend in a way that you yourself know will be highly parallelizable - in other words, Bend isn't magic.
+While "if your code _can_ run in parallel, it _will_ run in parallel", what I learned from designing these two matrix data structures is that it turns out making sure your code _can_ run in parallel is not so easy. You will almost certainly have to write or redesign your data to work with Bend in a way that you yourself know will be highly parallelizable - in other words, Bend isn't magic.
 
 This reduces the value proposition of Bend, at least for me, as I want to get my parallelism "for free" - I don't want to put in on the order of the same amount of work as I would have if I started in python and then added threads myself. Sure, I don't have to deal with _actual_ parallelization code, like mutexes and condition variables, but it's still quite a bit of wrangling to make Bend compute what I want in a way Bend can actually optimize.
 
@@ -195,9 +199,9 @@ In the table, we multiply two identity matrices of size 2^n by 2^n. MT means mul
 | 14  |        |     |      |         |     |       |     | 22    |
 
 Some notes:
-- Some of the fast bend trials were extremely noisy, randomly taking longer than the next order of n; I'm not too interested in statistically sound results so I reran those ones.
+- Some of the fast bend trials were extremely noisy, sometimes taking longer than the next order of n; I'm not too interested in statistically sound results so I reran those ones.
 - Sometimes the larger bend trials ran out of memory.
-- Though I couldn't get Bend's CUDA version to work (not a fault of Bend), the docs report a 5x speedup while using CUDA over the regular multithreaded version - this would put the MT Tree on the same order as the (sequential) Python program. (Though this 5x speedup was computed on a small sub 1s timescale, and I'd expect CUDA to have high multithreading overhead.)
+- Though I couldn't get Bend's CUDA version to work (not a fault of Bend), the docs report a 5x speedup while using CUDA over the regular multithreaded version - this would put the MT Tree on the same order as the (sequential) Python program. (Though this 5x speedup was computed on a small, sub 1s timescale, and I'd expect CUDA to have high multithreading overhead.)
 
 There's some interesting data here. First, we find that multithreading the map implementation actually slows it down, so it has a very high overhead for multithreading. It's also about two orders slower than the tree version; this I expected because the tree version has a lot fewer bookkeeping and overall unnecessary computations involved.
 
@@ -231,6 +235,6 @@ for (auto& t : threads) {
 ```
 (Under the assumption that addition is a really long and tedious computation. The relative ease of computing dot products is perhaps a major flaw in my case study, as it likely fails to play to Bend's strength.)
 
-Instead of this, it feels like I myself have to spell it out for Bend in my implementation. It feels like I myself would be able to write an interpreter for Bend code that can be maximally multithreaded - just spawn new threads whenever I hit a match/fold/bend statement (it would be really hard and definitely above my pay grade, obviously, but the point is I can see how it might be done.) 
+Instead of this, it feels like I myself have to spell it out for Bend in my implementation. In other words, it feels like I myself would be able to write an interpreter for Bend code that can be maximally multithreaded - just spawn new threads whenever I hit a match/fold/bend statement (it would be really hard and definitely above my pay grade, obviously, but the point is I can see how it might be done.) 
 
 I think Bend's dream is interesting and cool - our computers have lots of cores and threads, but we almost never write our programs in a way that utilizes them on the first pass. In theory, Bend automates all the heavy lifting of creating threads, mutexes, and so on. In practice, Bend requires a ton of logic fine-tuning just to make a program compatible with Bend's scheme of computation - and this is ignoring the current lack of raw performance, which I'm sure will improve rapidly over time. I'm interested to see how Bend progresses in development.

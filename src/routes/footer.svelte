@@ -2,6 +2,8 @@
 	import * as config from '$lib/config'
 </script>
 
+<div></div>
+
 <style>
 	footer {
 		padding-block: var(--size-7);

@@ -43,4 +43,9 @@
 			padding-inline: 0;
 		}
 	}
+
+	Footer {
+		padding-block: var(--size-7);
+		border-top: 1px solid var(--border);
+	}
 </style>

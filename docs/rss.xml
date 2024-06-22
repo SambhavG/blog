@@ -1,15 +1,15 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
 			<channel>
-				<title>Sambhav's Blog</title>
+				<title>Sambhav Gupta</title>
 				<description>Sambhav Gupta's Blog</description>
-				<link>https://sambhavg.github.io</link>
-				<atom:link href="https://sambhavg.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+				<link>https://sambhavg.github.io/blog</link>
+				<atom:link href="https://sambhavg.github.io/blog/rss.xml" rel="self" type="application/rss+xml"/>
 				
 						<item>
 							<title>I tried Bend</title>
-							<description>A case study and lessons learned from Bend, the new massively parallel programming language</description>
-							<link>https://sambhavg.github.io/bend</link>
-							<guid isPermaLink="true">https://sambhavg.github.io/bend</guid>
+							<description>A case study and lessons learned from using Bend, the new massively parallel programming language.</description>
+							<link>https://sambhavg.github.io/blog/bend</link>
+							<guid isPermaLink="true">https://sambhavg.github.io/blog/bend</guid>
 							<pubDate>Thu, 20 Jun 2024 07:00:00 GMT</pubDate>
 						</item>
 					

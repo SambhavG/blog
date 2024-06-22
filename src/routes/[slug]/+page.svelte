@@ -11,17 +11,18 @@
 	<meta property="og:title" content={data.meta.title} />
 </svelte:head>
 
+
 <article>
 	<hgroup>
 		<h1>{data.meta.title}</h1>
-		<p>Published at {formatDate(data.meta.date)}</p>
+		<p>{formatDate(data.meta.date)}</p>
 	</hgroup>
 
-	<div class="tags">
+	<!-- <div class="tags">
 		{#each data.meta.categories as category}
 			<span class="surface-4">&num;{category}</span>
 		{/each}
-	</div>
+	</div> -->
 
 	<div class="prose">
 		<svelte:component this={data.content} />

@@ -1,10 +1,8 @@
 ---
 title: I tried Bend
-description: A case study and lessons learned from Bend, the new massively parallel programming language
+description: A case study and lessons learned from using Bend, the new massively parallel programming language.
 date: '2024-6-20'
-categories:
-  - Bend
-  - Programming
+  
 published: true
 ---
 ## Contents
@@ -19,6 +17,8 @@ Bend has two main goals:
 This post is my attempt at a case study with my thoughts about the language mixed in.
 
 Disclaimer: this post almost certainly has errors and misunderstandings about Bend. My background is as a university math/CS student with some functional programming knowledge.
+
+Code is in [this repo](https://github.com/SambhavG/Bend-Matmul).
 ## Quick background
 Bend uses two keywords not common in mainstream languages: _fold_ and _bend_. The idea of _fold_ is to essentially do a Ctrl+F find and replace in a recursive data structure: if I wanted to replace all the leaf nodes (with values) in a tree with their doubles, I would write the following function:
 ```python
@@ -38,7 +38,7 @@ def doubleTree(t):
  
 The unseen bit of logic here is that whenever we write t.left, or t.right, since those are defined to be recursive (as denoted by the ~ in the type definition), they are Trees themselves. Thus, the _fold_ folds back and runs the whole chunk of logic on that object too. The Leaf case terminates because value is not a recursive entry. 
 
-This is essentially a BFS on the tree, where each branch can be computed in parallel, and opportunities for parallel computing like this are how Bend is able to multithread programs.
+This is essentially a Breadth First Search on the tree, where each branch can be computed in parallel. Opportunities for parallel computing like this are how Bend is able to multithread programs.
 
 What we wrote is (mostly) equivalent to this C program:
 ```c
@@ -117,8 +117,8 @@ The best (and only), but still problematic way I found to do this was to merge t
 This is definitely not computationally optimal because we are doing a ridiculous amount of extra work; Bend's variables are immutable, so each time we move one element over, we have to copy the first vector or matrix (this is probably optimized under the hood, like in Haskell). We're also moving each element to a different map O(log n) times instead of O(1) times if we just moved everything into one map by looping through the results. This was the best I could figure out under the restrictions of Bend, however.
 
 Code for this approach is in `map.bend`.
-## _fold_ is a subset of _match_; but why use fold?
-Quick tangent: Bend has a _match_ keyword which takes a structure and does something with it based on what its type is. It turns out (as mentioned in the docs) that the fold operation is syntactic sugar for match:
+## _fold_ is basically just _match_, but why use _fold_?
+Quick tangent: Bend has a _match_ keyword which takes a structure and does something with it based on what its type is. It turns out (as mentioned in the docs) that _fold_ is syntactic sugar for _match_:
 ```python
 fold t:
 	case Tree/Node:
@@ -130,15 +130,16 @@ fold t:
 def doubleTree(t):
 	match t:
 		case Tree/Node:
-			return Tree/Node(doubleTree(t.left), doubleTree(t.right))
+			return Tree/Node(doubleTree(t.left), 
+			                 doubleTree(t.right))
 		case Tree/Leaf:
 			return Tree/Leaf(t.value * 2)
 ```
-This also works if we pass arguments to fold, since functions can take arguments too. 
+This also works if we pass arguments to _fold_ (which requires a bit of extra syntax), since functions can take arguments too. 
 
-The issue with _fold_ as a replacement of loops is that _fold_ only works when the recursive calls only require themselves (and maybe some bookkeeping arguments). As we want to use two structures simultaneously, as in my case with dot products, we have to revert to the match syntax.
+The issue with _fold_ as a replacement of loops is that _fold_ works best when the recursive calls only require themselves and some bookkeeping arguments. When we want to use two structures simultaneously, as in my case with dot products, the _fold_ syntax becomes very long and awkward, as we have to pass the second structure as a bookkeeping argument and then _match_ it to its type when we want to use it - we might as well use two nested _match_ statements instead of a _match_ inside a _fold_.
 
-I also think using _fold_ instead of _match_ is rather confusing in general, as the way _fold_ manages recursion is not obvious unless you've read and understood the Bend manual (I think _match_ is pretty intuitive in contrast).
+I also think using _fold_ instead of _match_ is rather confusing in general, as the way _fold_ manages recursion is not obvious (to me) unless you've (I've) read and understood the Bend manual. I think _match_ is pretty intuitive in contrast.
 
 It can be seen that _bend_ is also syntactic sugar for an if/else statement wrapped in a function (though _bend_ uses the _when_ _else_ syntax; I don't know if there's a difference.)
 ## Attempt 4: No maps, custom trees
@@ -171,9 +172,9 @@ One caveat is that we don't have to make _every_ operation parallel - in our cas
 
 Intuitively, I would expect that as soon as we've parallelized enough to utilize all of the separate processing units on our computer or GPU, further parallelization isn't helpful - and this threshold can be reached pretty quickly.
 ## Too much matching
-This is a bit of an annoyance I had: every time I want to use a variable, I have to first match its type before I can reference its contents. My code has tall towers of matches and cases when I have any kind of nesting in my types.
+This is a bit of an annoyance I had: every time I want to use a variable, I have to first _match_ its type before I can reference its contents. My code has tall towers of _match_ es and _case_ s when I have any kind of nesting in my types.
 
-Philosophically, it seems like Bend should either be strongly typed, or not have this matching requirement. What we have is certainly not as ergonomic as Python, which does not care and just throws errors when variables aren't a compatible type.
+Philosophically, it seems like Bend should be either strongly typed or not have this matching requirement. What Bend has is certainly not as ergonomic as Python, which does not care and just throws errors when variables aren't a compatible type.
 ## Speed test
 To test the two implementations, I encoded the multiplication of two identity matrices. I'm sure more interesting matrices can be multiplied, but it's quite a bit of effort to encode a particular matrix in either of the two bend schemes. To factor out the time it takes to initialize the matrix, I allow each program to run the computation either once or twice, then subtract. Note that Bend can run in both single-threaded and multithreaded mode, using the run and run-c arguments respectively.
 
@@ -181,7 +182,7 @@ I also wrote a naive python implementation which goes about the computation in a
 
 All tests were run on a GCP instance with 8 cores and 60 GB of memory except the C one, which I ran on my computer because the binary wasn't compatible. I tried Bend's CUDA execution on the GCP instance's T4 GPU, but unfortunately kept running into CUDA errors I couldn't troubleshoot.
 
-In the table, we multiply two identity matrices of size 2^n by 2^n. MT means multithreaded. Times are in seconds.  First four result columns are Bend.
+In the table, we multiply two identity matrices of size 2^n by 2^n. Times are in seconds. MT means multithreaded.  First four result columns are Bend.
 
 | n   | MT Map | Map | Tree | MT Tree | Py  | MT Py | C   | Numpy |
 | --- | ------ | --- | ---- | ------- | --- | ----- | --- | ----- |
@@ -235,6 +236,6 @@ for (auto& t : threads) {
 ```
 (Under the assumption that addition is a really long and tedious computation. The relative ease of computing dot products is perhaps a major flaw in my case study, as it likely fails to play to Bend's strength.)
 
-Instead of this, it feels like I myself have to spell it out for Bend in my implementation. In other words, it feels like I myself would be able to write an interpreter for Bend code that can be maximally multithreaded - just spawn new threads whenever I hit a match/fold/bend statement (it would be really hard and definitely above my pay grade, obviously, but the point is I can see how it might be done.) 
+Instead of this, it feels like I myself have to spell it out for Bend in my implementation. In other words, it feels like I myself would be able to write an interpreter for Bend code that can be maximally multithreaded - just spawn new threads whenever I hit a piece of logic with function calls I can handle separately. It would be really hard and definitely above my pay grade, obviously, but the point is I can see how it might be done.
 
-I think Bend's dream is interesting and cool - our computers have lots of cores and threads, but we almost never write our programs in a way that utilizes them on the first pass. In theory, Bend automates all the heavy lifting of creating threads, mutexes, and so on. In practice, Bend requires a ton of logic fine-tuning just to make a program compatible with Bend's scheme of computation - and this is ignoring the current lack of raw performance, which I'm sure will improve rapidly over time. I'm interested to see how Bend progresses in development.
+I think Bend's dream is interesting and cool - our computers have lots of cores and threads, but we almost never write our programs in a way that utilizes them on the first pass. In theory, Bend automates all the heavy lifting of creating threads, mutexes, and so on. In practice, Bend requires a ton of logic fine-tuning just to make a program compatible with Bend's scheme of computation - and this is ignoring the current lack of raw performance, which I'm sure will improve rapidly over time. I'm interested to see how Bend progresses in development and where it will be a year or two from now.

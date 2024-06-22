@@ -1,31 +1,8 @@
-# SvelteKit Markdown Blog
+# Sambhav's Markdown Blog
 
-Learn how to build a blazingly fast and extendable SvelteKit Markdown blog for poets.
+Forked from [https://joyofcode.xyz/sveltekit-markdown-blog].
 
-## Post
-
-✍️ https://joyofcode.xyz/sveltekit-markdown-blog
-
-## Remote Development
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/joysofcode/sveltekit-markdown-blog)
-
-## Local Development
-
-### 🧑‍🤝‍🧑 Clone the project
-
-```sh
-https://github.com/joysofcode/sveltekit-markdown-blog.git
-```
-
-### 📦️ Install dependencies
-
-```sh
-pnpm i
-```
-
-### 💿️ Run the development server
-
-```sh
-pnpm run dev
-```
+## To run
+`npm install`
+`npm run dev` (to run locally)
+`npm run build` (builds to `./docs`)

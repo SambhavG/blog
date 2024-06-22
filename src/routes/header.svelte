@@ -6,9 +6,9 @@
 <nav>
 	<a href="/" class="title">
 		<b>{config.title}</b>
-	</a>
+		</a>
+		<Toggle />
 
-	<Toggle />
 </nav>
 
 <style>

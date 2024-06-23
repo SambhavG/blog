@@ -1,7 +1,7 @@
 ---
-title: I tried Bend
+title: I Tried Bend
 description: A case study and lessons learned from using Bend, the new massively parallel programming language.
-date: '2024-6-22'
+date: '2024-06-22'
   
 published: true
 ---
@@ -16,7 +16,7 @@ Bend has two main goals:
 
 This post is my attempt at a case study with my thoughts about the language mixed in.
 
-Disclaimer: this post almost certainly has errors and misunderstandings about Bend. My background is as a university math/CS student with some functional programming knowledge.
+Disclaimer: this post almost certainly has errors and misunderstandings about Bend. My background is as a university math and CS student with some functional programming knowledge.
 
 Code is in [this repo](https://github.com/SambhavG/Bend-Matmul).
 ## Quick background
@@ -72,7 +72,7 @@ Here, _fork_ is used to build another tree with a different argument to bend; ea
 ## Goal
 I'm going to try to implement a function which multiplies two matrices. 
 ## Attempt 1: Lists
-The first thing I tried was to naturally represent my vectors and matrices as lists and lists of lists respectively. This has a big problem. In Bend, Lists are linked lists. Each list is just the first number and a reference to the rest of the list. To compute the dot product of two equal length lists, we'd compute:
+The first thing I tried was to naturally represent my vectors and matrices as lists and lists of lists respectively. This has a big problem. In Bend, Lists are linked lists. Each list is just a head (the first number) and a reference to the rest of the list. To compute the dot product of two equal length lists, we'd compute:
 ```python
 def dot(v1, v2):
 	match v1:
@@ -85,7 +85,7 @@ def dot(v1, v2):
 				case List/Cons:
 					return v1.head*v2.head+dot(v1.tail,v2.tail)
 ```
-(Note: each List is either a List/Nil or a List/Cons, where List/Nil is an empty list and List/Cons is not. When our tail is empty, it will be a List/Nil, but until then it will be a LIst/Cons.)
+(Note: each List is either a List/Nil or a List/Cons, where List/Nil is an empty list and List/Cons is not. When our tail is empty, it will be a List/Nil, but until then it will be a List/Cons.)
 
 This computation is sequential because if the entry-wise products were 1, 2, 3, 4, 5, 6, 7, we'd be computing 1+ (2+ (3+ (4+ (5+ (6 + 7))))), which must be computed in consecutive order. Bend has no way to optimize a computation like this, as each + depends on another + to complete first.
 
@@ -158,7 +158,7 @@ type MatrixTree:
 	Nil
 ```
 
-From here, our computations are very natural. To multiply two matrices, we need to split the first matrix in half until it's all rows, then multiply each row with the second matrix which we split the same way. Once we've recursed down to the level of two vectors, we can take the dot product by summing the dot products of their respective left and right sides.
+From here, our computations are very natural. To multiply two matrices, we need to repeatedly split the first matrix in half until it's all rows, then multiply each row with the second matrix which we split the same way. Once we've recursed down to the level of two vectors, we can take the dot product by summing the dot products of their respective left and right sides.
 
 Out of laziness, I made this approach work only good enough for matrices of size a power of 2, but I don't think it's hard to generalize it to any size with a couple more type matching cases.
 
@@ -174,7 +174,7 @@ Intuitively, I would expect that as soon as we've parallelized enough to utilize
 ## Too much matching
 This is a bit of an annoyance I had: every time I want to use a variable, I have to first _match_ its type before I can reference its contents. My code has tall towers of _match_ es and _case_ s when I have any kind of nesting in my types.
 
-Philosophically, it seems like Bend should be either strongly typed or not have this matching requirement. What Bend has is certainly not as ergonomic as Python, which does not care and just throws errors when variables aren't a compatible type.
+Philosophically, it seems like Bend should either be strongly typed or not have this matching requirement. What Bend has is certainly not as ergonomic as Python, which does not care and just throws errors when variables aren't a compatible type.
 ## Speed test
 To test the two implementations, I encoded the multiplication of two identity matrices. I'm sure more interesting matrices can be multiplied, but it's quite a bit of effort to encode a particular matrix in either of the two bend schemes. To factor out the time it takes to initialize the matrix, I allow each program to run the computation either once or twice, then subtract. Note that Bend can run in both single-threaded and multithreaded mode, using the run and run-c arguments respectively.
 
@@ -236,6 +236,6 @@ for (auto& t : threads) {
 ```
 (Under the assumption that addition is a really long and tedious computation. The relative ease of computing dot products is perhaps a major flaw in my case study, as it likely fails to play to Bend's strength.)
 
-Instead of this, it feels like I myself have to spell it out for Bend in my implementation. In other words, it feels like I myself would be able to write an interpreter for Bend code that can be maximally multithreaded - just spawn new threads whenever I hit a piece of logic with function calls I can handle separately. It would be really hard and definitely above my pay grade, obviously, but the point is I can see how it might be done.
+Instead, it feels like I have to spell it out for Bend in my implementation. In other words, it feels like I myself would be able to write an interpreter for Bend code that can be maximally multithreaded - just spawn new threads whenever I hit a piece of logic with function calls I can handle separately. It would be really hard and definitely above my pay grade, but the point is I can see how it might be done.
 
 I think Bend's dream is interesting and cool - our computers have lots of cores and threads, but we almost never write our programs in a way that utilizes them on the first pass. In theory, Bend automates all the heavy lifting of creating threads, mutexes, and so on. In practice, Bend requires a ton of logic fine-tuning just to make a program compatible with Bend's scheme of computation - and this is ignoring the current lack of raw performance, which I'm sure will improve rapidly over time. I'm interested to see how Bend progresses in development and where it will be a year or two from now.

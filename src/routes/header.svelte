@@ -7,7 +7,7 @@
 	<a href="/" class="title">
 		<b>{config.title}</b>
 	</a>
-	<Toggle />
+	<!-- <Toggle /> -->
 </nav>
 
 <style>

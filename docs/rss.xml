@@ -6,11 +6,11 @@
 				<atom:link href="https://sambhavg.github.io/blog/rss.xml" rel="self" type="application/rss+xml"/>
 				
 						<item>
-							<title>I tried Bend</title>
+							<title>I Tried Bend</title>
 							<description>A case study and lessons learned from using Bend, the new massively parallel programming language.</description>
 							<link>https://sambhavg.github.io/blog/bend</link>
 							<guid isPermaLink="true">https://sambhavg.github.io/blog/bend</guid>
-							<pubDate>Sat, 22 Jun 2024 07:00:00 GMT</pubDate>
+							<pubDate>Sat, 22 Jun 2024 00:00:00 GMT</pubDate>
 						</item>
 					
 			</channel>

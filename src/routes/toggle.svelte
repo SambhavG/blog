@@ -20,7 +20,7 @@
 
 <style>
 	button {
-		padding: 0;
+		padding: var(--size-2);
 		font-weight: inherit;
 		background: none;
 		border: none;

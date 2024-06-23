@@ -1,7 +1,7 @@
 ---
 title: I tried Bend
 description: A case study and lessons learned from using Bend, the new massively parallel programming language.
-date: '2024-6-20'
+date: '2024-6-22'
   
 published: true
 ---
@@ -206,7 +206,7 @@ Some notes:
 
 There's some interesting data here. First, we find that multithreading the map implementation actually slows it down, so it has a very high overhead for multithreading. It's also about two orders slower than the tree version; this I expected because the tree version has a lot fewer bookkeeping and overall unnecessary computations involved.
 
-Multithreading the tree version boosts it by a little over one order, putting it about one order behind the naive python program.  (One order here is about a factor of 8 in raw computation, since the algorithm we compute is O(x^3) for matrices of size x). The multithreaded Python program only has a slight boost over its normal counterpart. From there, the C and Numpy programs are 2 and 5 orders ahead respectively (Numpy might take advantage of the identity-ness of the matrices.)
+Multithreading the tree version boosts it by a little over one order, putting it about one order behind the naive python program.  (One order here is about a factor of 8 in raw computation, since the algorithm we compute is O(x^3) for matrices of size x). The multithreaded Python program only has a slight boost over its normal counterpart. From there, the C and Numpy programs are 2 and 5 orders ahead respectively (Numpy might take advantage of the identity-ness of the matrices).
 
 Anecdotally, I also think there's some role being played by memory and garbage collection; the first trial I run in Bend on a fresh restart seems less likely to hit OOM errors than later ones.
 ## Conclusion

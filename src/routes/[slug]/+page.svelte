@@ -11,7 +11,6 @@
 	<meta property="og:title" content={data.meta.title} />
 </svelte:head>
 
-
 <article>
 	<hgroup>
 		<h1>{data.meta.title}</h1>
@@ -42,6 +41,10 @@
 	h1 + p {
 		margin-top: var(--size-2);
 		color: var(--text-2);
+	}
+
+	.prose {
+		margin-right: 2em;
 	}
 
 	.tags {

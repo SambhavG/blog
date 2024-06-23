@@ -6,14 +6,16 @@
 <nav>
 	<a href="/" class="title">
 		<b>{config.title}</b>
-		</a>
-		<Toggle />
-
+	</a>
+	<Toggle />
 </nav>
 
 <style>
 	nav {
 		padding-block: var(--size-7);
+		/* padding-right: 2em; */
+		display: flex;
+		justify-content: space-between;
 	}
 
 	.links {
@@ -23,6 +25,10 @@
 	a {
 		color: inherit;
 		text-decoration: none;
+		padding-top: var(--size-1);
+	}
+	b {
+		font-size: 1.4em;
 	}
 
 	@media (min-width: 768px) {

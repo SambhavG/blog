@@ -4,7 +4,7 @@
 </script>
 
 <nav>
-	<a href={config.isDev ? '/' : '/blog'} class="title">
+	<a href="https://sambhavg.github.io/blog" class="title">
 		<b>{config.title}</b>
 	</a>
 	<!-- <Toggle /> -->

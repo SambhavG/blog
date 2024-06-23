@@ -4,7 +4,7 @@
 </script>
 
 <nav>
-	<a href="/" class="title">
+	<a href={config.url} class="title">
 		<b>{config.title}</b>
 	</a>
 	<!-- <Toggle /> -->

@@ -1,6 +1,6 @@
 # Sambhav's Markdown Blog
 
-Forked from [https://joyofcode.xyz/sveltekit-markdown-blog].
+Forked from https://joyofcode.xyz/sveltekit-markdown-blog.
 
 ## To run
 `npm install`

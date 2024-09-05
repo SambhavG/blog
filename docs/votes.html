@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" href="./favicon.png" />
+		<link rel="icon" href="https://fav.farm/🟦" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="alternate" type="application/atom+xml" href="/rss.xml" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+		<script type="module">
+			const theme = localStorage.getItem('color-scheme')
+
+			theme
+				? document.documentElement.setAttribute('color-scheme', theme)
+				: localStorage.setItem('color-scheme', 'dark')
+		</script>
+		
+		<link href="./_app/immutable/assets/0.KXJLVNtP.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/3.CVui_4x3.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.BZ3McIeA.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/entry.DrL6QSIa.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/scheduler.DVE4yslD.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/paths.By8Bwu2p.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/control.CYgJF_JY.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.1OUvb8qW.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper.D6kgxu3v.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.hm2RE5aj.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.BsGI8Xjw.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/config.C9d-yZ3T.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/3.CJu1Lt8t.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/utils.BzZo_9Im.js"><title>Tipping the Election</title><!-- HEAD_svelte-ylbs26_START --><meta property="og:type" content="article"><meta property="og:title" content="Tipping the Election"><!-- HEAD_svelte-ylbs26_END -->
+	</head>
+
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-7VS6Y2PPJF"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-7VS6Y2PPJF');
+	</script>
+
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">  <div class="layout svelte-9rv88k"><nav class="svelte-1kqq7cd"><a href="/" class="title svelte-1kqq7cd"><b class="svelte-1kqq7cd">Sambhav Gupta</b></a>  </nav> <main class="svelte-9rv88k"><div class="transition svelte-vcdv4c"> <article class="svelte-zpvgpv"><hgroup><h1 class="svelte-zpvgpv">Tipping the Election</h1> <p class="svelte-zpvgpv">September 4, 2024</p></hgroup>  <div class="prose svelte-zpvgpv"><p data-svelte-h="svelte-1spjttn">This is essentially a random thought I had, then decided to code up and see what the code would spit out.</p> <p data-svelte-h="svelte-1k6r7c8">Here’s the thing: if you vote in the US presidential election (ignoring all down-ballot races) and your candidate wins by more than one vote, then <em>technically</em>, your vote was a waste of time. Indeed, you could have stayed home and the election would have turned out exactly the same as it did thanks to your vote.</p> <p data-svelte-h="svelte-1dyqqd9"><em>Obvously</em>, this by itself is not particularly useful or insightful, especially for presidential candidates who aren’t interested in winning each of their states by the minimum possible margin so that all their voters feel maximally valued.</p> <p data-svelte-h="svelte-19hq579">However, it can be extended to the following: in some presidential election outcomes, it’s possible for one state to be near the center for votes cast, and for that state to thus essentially (in some sense) determine the outcome of the entire election (such as Florida in the 2000 election). Thus, if you’re a voter in this state and you help your candidate win by 1, your vote decided the election; indeed, had you stayed home, the outcome of the election would be a stalemate rather than a victory.</p> <p data-svelte-h="svelte-9jyggm">In the US we talk a lot about how fair or unfair the electoral college is (usually qualitatively, but sometimes quantitatively as well), and this gives me the opportunity to present a toy metric (for entertainment only) of vote value: compared to the other swing states, how likely is my vote in my swing state to decide the US election?</p> <h2 id="assumptions" data-svelte-h="svelte-9536am">Assumptions</h2> <ol data-svelte-h="svelte-1lt7p9v"><li>The value of your vote is directly proportional to (1) the probability that your state will tip the election, and (2) the probability that your vote will tip the state assuming your state tipped the election.
+<ul><li>In other words, what is the relative probability that your party could not have won the election had you not cast your vote?</li></ul></li> <li>In any election outcome, the state that “tips the election” is found as follows: we order the states by % lead of one party. If (1) one party “barely wins” and (2) they win by a margin of electoral votes that is less than the value of the state that they won by the smallest percentage, that state tipped the election. In other words, the tipping state casts the 270th vote for the winning party while no other states were closer but went to the winning party. Clearly not all elections will have a tipping state - we’ll consider these landslides and ignore them.</li></ol> <p data-svelte-h="svelte-1x7l4t4">Note that the two probabilities are not independent; the higher the chance that our vote will tip the state, the higher the chance that our state will tip the election since it will be among the states with near-50/50 outcomes at the center of the spread. The higher the chance that our state will tip the election, the higher the chance that our vote will tip the state since a state that can tip the election is more likely to get near-50/50 outcomes. We try to roughly control for this in our experiment.</p> <h2 id="methodology" data-svelte-h="svelte-1mjb784">Methodology</h2> <ol data-svelte-h="svelte-1yxu8bk"><li>Lock all non-swing states. For this we look at Nate Silver’s polling estimations, which show Pennsylvania, Michigan, Georgia, North Carolina, Wisconsin, Arizona, and Nevada with a less than 4 margin either way (this cutoff is arbitrary and you could run this experiment with all 50 states if you wanted). Virginia has some weird and few recent polls, but we will mark it solid D to keep things simple. We also ignore the split votes in Nebraska and Maine. <a href="https://www.270towin.com/maps/kyvld" rel="nofollow">This is our map</a>.</li> <li>Sample an election outcome. Assume all states are independent, so the chance of national polling bias is not higher than any other arrangement of polling biases among the swing states. To sample an election, we sample an outcome for each state. To sample a state, we find Nate Silver’s estimated poll numbers, the average number of people in each poll used (turned out to be ~800 except for Pennsylvania, which had larger polls), and the number of people who voted in 2020 for each state (pulled from <a href="https://www.kff.org/other/state-indicator/number-of-voters-and-voter-registration-in-thousands-as-a-share-of-the-voter-population" rel="nofollow">here</a> for November 2020). Several aspects of this are rather imprecise, but this whole experiment is very hand-rolled in terms of statistics so I’m not very concerned. This is just for fun.</li> <li>If there is a tipping state, observe what range of outcomes in that state would make it a tipping state. For example, anywhere between +.0001 and +3% for the winning party, if the next closest state for the winning party was won by 3%. A tipping state for the winning party would usually be a tipping state for the losing party too (though I’ll roughly ignore deadlock scenarios), so this would turn into some margin like -2% to 3%.</li> <li>Compute the probability that this state will be won by 1 vote for the winning party (constant for all states), but divide that by the probability that the outcome will be between -2% and +3%. In other words, we don’t care about the outcomes where the state is outside that range because it wouldn’t have been a tipping state in the first place. Actually, sometimes a small state like Nevada can swap with a big state and the big state will still be the tipping state; the way we check in practice sweeps the state across the spread until it would be a tipping state on either side to find the boundaries.</li> <li>Run steps 2-4 for a couple thousand trials (I did 30,000, but my code was pretty slow).</li> <li>Take an average of all the tipping vote probabilities for every time each state was a tipping state; multiply that by the probability that the state was a tipping state to get relative numbers for each state. Scale up so that the lowest state has a 1x vote share.</li></ol> <p data-svelte-h="svelte-ex30en">In reality, the value of a vote may be more accurately defined as relative to the inverse of the multiplicative margin over the losing party; if we win by 2x, our vote is worth 50% of what it would be worth in an election where we barely win, for example. This makes sense from a candidate’s perspective, as the value of more votes should smoothly decrease as the predicted margin of victory increases. It also means I don’t get to run this experiment.</p> <h2 id="results" data-svelte-h="svelte-1ai6hiq">Results</h2> <img src="./election_infographic.png"> <p data-svelte-h="svelte-bacs03">I initially ran for 500 trials or so and got a high number for Nevada, around 2.5, while everything else was vanishingly small. I assumed this was a fluke that would go away with a higher sample, but it turned out to only magnify.</p> <p data-svelte-h="svelte-jhj9zi">Actually, if we print out the intermediate values, we can get more reasoning for why Nevada is so high:</p> <!-- HTML_TAG_START --><pre class="shiki poimandres" style="background-color:#1b1e28;color:#a6accd" tabindex="0"><code><span class="line"><span>Relative probability that </span></span>
+<span class="line"><span>your vote tips the state </span></span>
+<span class="line"><span>(if the state tips the election):</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Nevada: 23.06</span></span>
+<span class="line"><span>Arizona: 7.21</span></span>
+<span class="line"><span>Wisconsin: 3.44</span></span>
+<span class="line"><span>North Carolina: 2.03</span></span>
+<span class="line"><span>Michigan: 2.01</span></span>
+<span class="line"><span>Georgia: 1.78</span></span>
+<span class="line"><span>Pennsylvania: 1.00</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Probability that state </span></span>
+<span class="line"><span>will tip the election:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Pennsylvania: 0.29</span></span>
+<span class="line"><span>Georgia: 0.16</span></span>
+<span class="line"><span>Michigan: 0.15</span></span>
+<span class="line"><span>North Carolina: 0.14</span></span>
+<span class="line"><span>Wisconsin: 0.10</span></span>
+<span class="line"><span>Arizona: 0.09</span></span>
+<span class="line"><span>Nevada: 0.07</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Relative probability that </span></span>
+<span class="line"><span>your vote will tip the election:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Nevada: 5.77</span></span>
+<span class="line"><span>Arizona: 2.24</span></span>
+<span class="line"><span>Wisconsin: 1.16</span></span>
+<span class="line"><span>Pennsylvania: 1.03</span></span>
+<span class="line"><span>Michigan: 1.02</span></span>
+<span class="line"><span>Georgia: 1.01</span></span>
+<span class="line"><span>North Carolina: 1.00</span></span></code></pre><!-- HTML_TAG_END --> <p data-svelte-h="svelte-qs8zvd">The chance that Nevada will tip the election is the lowest, but the probability that the winner will win by 1 (when Nevada is tipping) is so high that it more than cancels out. Arizona sees a similar but smaller bump. Interestingly, despite having the highest chance of tipping the election (proportional to being the biggest), since Pennsylvania has the smallest (and disproportinately smallest) chance of being tipped by one vote, the value of a Pennsylvania vote by this metric gets squashed.</p> <p data-svelte-h="svelte-1josuej">The small states are helped out by the conditioning we do on the fact that we only care about tipping votes with respect to the outcomes where the state is a tipping state. Even though the state ends up at the center less often, when it does, it seems to have its outcomes squashed to a thinner set compared to the wider states which can afford a wider range of outcomes while still managing to hold the spotlight of tipping the election. This squashing effect appears to more than counteract the contrasting negative of not holding the spotlight as often.</p></div> </article></div></main> <footer class="svelte-1fvv9s8" data-svelte-h="svelte-egjb02"><p class="svelte-1fvv9s8">Made by <a href="https://sambhavg.github.io/" target="_blank">Sambhav Gupta</a></p> </footer> </div> 
+			
+			<script>
+				{
+					__sveltekit_1n6srzl = {
+						base: new URL(".", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.BZ3McIeA.js"),
+						import("./_app/immutable/entry/app.1OUvb8qW.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 3],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>

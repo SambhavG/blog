@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" href="./favicon.png" />
+		<link rel="icon" href="https://fav.farm/🟦" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="alternate" type="application/atom+xml" href="/rss.xml" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+		<script type="module">
+			const theme = localStorage.getItem('color-scheme')
+
+			theme
+				? document.documentElement.setAttribute('color-scheme', theme)
+				: localStorage.setItem('color-scheme', 'dark')
+		</script>
+		
+		<link href="./_app/immutable/assets/0.KXJLVNtP.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/3.CVui_4x3.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.BZ3McIeA.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/entry.DrL6QSIa.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/scheduler.DVE4yslD.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/paths.By8Bwu2p.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/control.CYgJF_JY.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.1OUvb8qW.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper.D6kgxu3v.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.hm2RE5aj.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.BsGI8Xjw.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/config.C9d-yZ3T.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/3.CJu1Lt8t.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/utils.BzZo_9Im.js"><title>Sorting Medals</title><!-- HEAD_svelte-ylbs26_START --><meta property="og:type" content="article"><meta property="og:title" content="Sorting Medals"><!-- HEAD_svelte-ylbs26_END -->
+	</head>
+
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-7VS6Y2PPJF"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-7VS6Y2PPJF');
+	</script>
+
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">  <div class="layout svelte-9rv88k"><nav class="svelte-1kqq7cd"><a href="/" class="title svelte-1kqq7cd"><b class="svelte-1kqq7cd">Sambhav Gupta</b></a>  </nav> <main class="svelte-9rv88k"><div class="transition svelte-vcdv4c"> <article class="svelte-zpvgpv"><hgroup><h1 class="svelte-zpvgpv">Sorting Medals</h1> <p class="svelte-zpvgpv">August 30, 2024</p></hgroup>  <div class="prose svelte-zpvgpv"><p data-svelte-h="svelte-1lpkimg">This is a quick writeup about a <a href="https://sambhavg.github.io/medals" rel="nofollow">visualization</a> I made a couple weeks ago where I used three.js to put together an interactive 3D layer cake of medal sorting schemes, where each scheme assigned a different value to silver and bronze medals with respect to gold. The visualization was inspired by a <a href="https://www.nytimes.com/interactive/2024/07/29/upshot/olympics-medal-table-paris.html" rel="nofollow">New York Times</a> piece in which they identified that most of the schemes for ranking Olympic teams by the number of gold, silver, and bronze medals are actually just points in a 2D space, where one dimension is the value of silver with respect to gold, and the other is the value of bronze with respect to silver.</p> <p data-svelte-h="svelte-sgczjc">This accounts for all points-based schemes - you can come up with weirder schemes like points = gold^3 + silver^2 + bronze, but most schemes fall somewhere on this 2D plane. If we add the restriction that better medals are always worth at least as many points, we get a quarter of a plane, and if we scale the axis in the other direction exponentially, we get an enclosed square.</p> <p data-svelte-h="svelte-1d2f683">The NYT shows all their squares separately, but you can actually interleave the planes with each other by representing placement with not color, but height. This is what I do with my visualization: I keep the medal value axes the same, but I stack the planes in 3D so you can see all of the rankings at once. I don’t claim it’s easier to understand than the NYT version (it’s probably much harder), but that’s the idea. I also smooth out the planes so they don’t sharply snap up and down at the border lines you can see in the NYT version.</p></div> </article></div></main> <footer class="svelte-1fvv9s8" data-svelte-h="svelte-egjb02"><p class="svelte-1fvv9s8">Made by <a href="https://sambhavg.github.io/" target="_blank">Sambhav Gupta</a></p> </footer> </div> 
+			
+			<script>
+				{
+					__sveltekit_1n6srzl = {
+						base: new URL(".", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.BZ3McIeA.js"),
+						import("./_app/immutable/entry/app.1OUvb8qW.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 3],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>

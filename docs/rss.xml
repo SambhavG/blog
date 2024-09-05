@@ -6,6 +6,22 @@
 				<atom:link href="https://sambhavg.github.io/blog/rss.xml" rel="self" type="application/rss+xml"/>
 				
 						<item>
+							<title>Tipping the Election</title>
+							<description>How likely are you to tip the US presidential election if you're a swing state voter, compared to the other swing states?</description>
+							<link>https://sambhavg.github.io/blog/votes</link>
+							<guid isPermaLink="true">https://sambhavg.github.io/blog/votes</guid>
+							<pubDate>Thu, 05 Sep 2024 00:00:00 GMT</pubDate>
+						</item>
+					
+						<item>
+							<title>Sorting Medals</title>
+							<description>Every possible way to rank the Olympic teams, now in 3D</description>
+							<link>https://sambhavg.github.io/blog/medals</link>
+							<guid isPermaLink="true">https://sambhavg.github.io/blog/medals</guid>
+							<pubDate>Sat, 31 Aug 2024 00:00:00 GMT</pubDate>
+						</item>
+					
+						<item>
 							<title>I Tried Bend</title>
 							<description>A case study and lessons learned from using Bend, the new massively parallel programming language.</description>
 							<link>https://sambhavg.github.io/blog/bend</link>

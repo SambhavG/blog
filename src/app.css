@@ -3,7 +3,7 @@
 
 html {
 	/* font */
-	--font-sans: 'Verdana', 'Arial', sans-serif;
+	--font-sans: 'Outfit', 'Verdana', 'Arial', sans-serif;
 	--font-mono: 'JetBrains Mono', monospace;
 
 	/* dark */
@@ -99,18 +99,33 @@ html {
 	background-attachment: fixed;
 }
 
+h1 {
+	font-weight: 700;
+}
+
+h2 {
+	font-weight: 500;
+}
+
 img {
 	border-radius: var(--radius-3);
 }
 
-ul,
-ol {
+ul {
 	list-style: none;
 	padding: 0;
 }
 
+ol {
+  padding: 0;
+}
+
 li {
 	padding-inline-start: 0;
+} 
+
+ol {
+  list-style: decimal;
 }
 
 .surface-1 {
@@ -143,8 +158,12 @@ li {
 }
 
 .prose :is(ul, ol) {
-	list-style-type: '•';
+	/* list-style-type: '•'; */
 	padding-left: var(--size-5);
+}
+
+.prose :is(ul) {
+	list-style-type: '•';
 }
 
 .prose :is(ul, ol) li {

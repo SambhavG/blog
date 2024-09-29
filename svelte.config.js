@@ -34,16 +34,13 @@ const config = {
 	extensions: ['.svelte', '.md'],
 	preprocess: [vitePreprocess(), mdsvex(mdsvexOptions)],
 	kit: {
-		adapter: adapter({
-			pages: "docs",
-			assets: "docs",
-		})
-	},
-	paths: {
-		base: process.env.NODE_ENV === 'production' ? '/blog' : ''
-	},
-	prerender: {
-		default: true
+		adapter: adapter(),
+		paths: {
+			base: process.env.NODE_ENV === 'production' ? '/blog' : ''
+		},
+		prerender: {
+			handleHttpError: 'warn'
+		},
 	}
 }
 

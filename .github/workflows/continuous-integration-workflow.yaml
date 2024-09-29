@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: "22.x"
       - run: npm install --force
-      - run: npm ci
+      - run: npm ci --force
       - name: List files
         run: ls -R src
       - run: npm run build

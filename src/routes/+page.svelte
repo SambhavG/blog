@@ -16,7 +16,9 @@
 			<li class="post">
 				<a href={post.slug} class="title">{post.title}</a>
 				<p class="date">{formatDate(post.date)}</p>
-				<p class="description">{post.description}</p>
+				{#if post.description}
+					<p class="description">{post.description}</p>
+				{/if}
 			</li>
 		{/each}
 	</ul>

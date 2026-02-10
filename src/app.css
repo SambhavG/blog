@@ -107,8 +107,12 @@ h2 {
 	font-weight: 500;
 }
 
+h3 {
+	font-weight: 300;
+}
+
 img {
-	border-radius: var(--radius-3);
+
 }
 
 ul {
@@ -148,9 +152,14 @@ ol {
 	color: var(--text-1);
 }
 
-.prose :is(h2, h3, h4, h5, h6) {
-	margin-top: var(--size-8);
+.prose :is(h1, h2, h3, h4, h5, h6) {
+	margin-top: var(--size-6);
 	margin-bottom: var(--size-3);
+}
+
+/* Tighter spacing when a heading immediately follows another (e.g. # then ##) */
+.prose :is(h1, h2, h3, h4, h5) + :is(h2, h3, h4, h5, h6) {
+	margin-top: var(--size-4);
 }
 
 .prose p:not(:is(h2, h3, h4, h5, h6) + p) {

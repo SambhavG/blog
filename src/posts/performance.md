@@ -370,6 +370,8 @@ published: true
 
 I attempted [Anthropic's performance take-home exam](https://github.com/anthropics/original_performance_takehome) released recently. I achieved a final score of 1218 cycles, beating both the recruiting threshold (1487) and Opus 4.5's best score (1363). [My solution](https://github.com/SambhavG/anthropic-performance) is relatively simple and interpretable, combining a couple of basic theoretical and practical optimizations. Scroll to the bottom for a simulation of the solution in the form of my intermediate representation.
 
+## Contents
+
 # Problem statement
 
 ## The Processor

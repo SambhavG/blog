@@ -386,6 +386,7 @@ For the tree, we can compute child values using the tree indexing trick where th
 1. Get the corresponding tree node i's value v' and xor it: v = v xor v'
 2. Hash v: v = hash(v)
 3. Compute the next index: i = 2i + (v%2), and if i>2047, i = 1
+
 Notably, we'll know at compile time when the loopback happens since we can compile our kernel for a specific testcase (where only the inner tree data is random but all the size parameters are fixed and known), so we don't actually have to check this if statement in code (we can just directly set all the indices back to 1).
 
 # Compute and Memory Bounds
@@ -408,6 +409,7 @@ It turns out we can keep our indices in the 7-indexed scheme thanks to the vmult
 I initially wrote up a version of this problem where we try to load in as much of the tree as possible to scratch, then use those values throughout the problem. For the same reason earlier mentioned about main memory addressing, this is impossible - there are no instructions capable of double indirection into scratch memory. If we have a scratch address in a scratch register, we can't actually dereference that scratch address and fetch or do math with the result. This means, for every round and value, we need to either:
 1. Fetch the required tree value straight from main memory, as the load instruction does allow (and in fact requires) double indirection.
 2. Do something clever using instructions like vectorized select to reduce the memory pressure, particularly on less complicated levels of the tree. For example, on level 0, all of the scratch values xor with the same tree value, so we can just load it to a register and reuse it for all the scratch values without any loading logic.
+
 If we go with idea 1 for every level of our tree, we'll need 16 rounds of loads for each of the 256 values in our batch, and at 2 loads per cycle that's at least 2048 cycles. Thanks to the specific test case design and the VSELECT instruction, there's a lot we can do to match the memory and compute cost.
 
 ### Muxing
@@ -433,6 +435,7 @@ We could try to orchestrate and fit the instructions to the CPU ourselves, but m
 The intermediate representation scheme we'll write is relatively simple, but hits some quirks around loading and storing. It has two rough assumptions:
 1. All registers are treated as 8-aligned vector registers
 2. Every instruction writes to a fresh register. The compiler will handle checking when a register can be "clobbered" ie written over due to nothing needing to read from it anymore.
+
 One exception is that loading the tree from indices requires 8 loads all to the same vector, because it only loads one scalar at a time, so the compiler will have to do some extra offset computations when lowering this instruction from IR to a real instruction.
 
 With this and a bunch of small implementation details, we can write our entire computation in an IR form that doesn't care what the input values are, as long as we're careful to write each instruction correctly. A sample of these is shown below:
